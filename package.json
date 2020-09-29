@@ -1,7 +1,7 @@
 {
- "name": "new_klient",
+ "name": "javascript-prework",
  "version": "1.0.0",
- "description": "",
+ "description": "javascript-prework",
  "main": "index.js",
  "scripts": {
   "init-project": "npm install && npm-run-all init:*",
