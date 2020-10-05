@@ -3,29 +3,19 @@ function printMessage(msg){
 	div.innerHTML = msg;
 	document.getElementById('messages').appendChild(div);
 }
+function printMessageRound(msg){
+	let div = document.createElement('div');
+	div.innerHTML = msg;
+	document.getElementById('round').appendChild(div);
+}
 function clearMessages(){
 	document.getElementById('messages').innerHTML = '';
-}
-function displayResult(argComputerMove, argPlayerMove){
-  printMessage('Zagrałem ' + argComputerMove + ', a Ty ' + argPlayerMove);
-  if( argPlayerMove=='nieznany ruch'){
-      printMessage('Wprowadź poprawną wartość 1-3');
-    return;
-  }
-  if((argComputerMove == 'kamień' && argPlayerMove == 'papier')
-  ||(argComputerMove == 'nożyce' && argPlayerMove == 'kamień')
-  ||(argComputerMove == 'papier' && argPlayerMove == 'nożyce')){
-    printMessage('Ty wygrywasz!');
-  } else
-      if( argComputerMove == argPlayerMove ){
-          printMessage('Remis');
-          }
-            else {
-            printMessage('Tym razem przegrywasz :(');
-          }
+	document.getElementById('round').innerHTML = '';
 }
 function playGame(playerInput){
 	clearMessages();
+	console.log(numberComputer*100/(numberPlayer+numberComputer))
+	let playerInputMemory=playerInput;
 	let randomOutput = Math.floor(Math.random() * 3 + 1);
 	if(randomOutput == 1){
     randomOutput= 'kamień';
@@ -36,8 +26,36 @@ function playGame(playerInput){
   if(randomOutput == 3){
     randomOutput= 'nożyce';
   }
-	displayResult(randomOutput,playerInput);
+  if((randomOutput == 'kamień' && playerInput == 'papier')
+  ||(randomOutput == 'nożyce' && playerInput == 'kamień')
+  ||(randomOutput == 'papier' && playerInput == 'nożyce')){
+		numberPlayer++;
+    printMessage('Ty wygrywasz!');
+		printMessage('Zagrałem ' + randomOutput + ', a Ty ' + playerInput);
+		printMessageRound("Ty wygrałeś: "+numberPlayer+" Remis: "+remis+" Wygrał computer:"+numberComputer)
+  } else
+  if(randomOutput == playerInput ){
+		remis++;
+		printMessage('Remis');
+		printMessage('Zagrałem ' + randomOutput + ', a Ty ' + playerInput);
+		printMessageRound("Ty wygrałeś: "+numberPlayer+" Remis: "+remis+" Wygrał computer:"+numberComputer)
+  }
+  else {
+				if (((numberComputer+1)*100/(numberPlayer+numberComputer))<25) {
+					numberComputer++;
+    			printMessage('Tym razem przegrywasz :(');
+					printMessage('Zagrałem ' + randomOutput + ', a Ty ' + playerInput);
+					printMessageRound("Ty wygrałeś: "+numberPlayer+" Remis: "+remis+" Wygrał computer:"+numberComputer)
+    	}
+		 	else {
+					playGame(playerInputMemory)
+		 		}
+    }
 }
-document.getElementById('play-rock').addEventListener('click', function(){ playGame('kamień')});
-document.getElementById('play-paper').addEventListener('click', function(){ playGame('papier')});
-document.getElementById('play-scissors').addEventListener('click', function(){ playGame('nożyce')});
+
+let numberPlayer=0;
+let numberComputer=0;
+let remis=0;
+document.getElementById('play-rock').addEventListener('click', function(){playGame('kamień')});
+document.getElementById('play-paper').addEventListener('click', function(){playGame('papier')});
+document.getElementById('play-scissors').addEventListener('click', function(){playGame('nożyce')});
